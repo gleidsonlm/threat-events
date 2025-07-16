@@ -456,6 +456,125 @@ export default function ThreatDashboard() {
 }
 ```
 
+### Threat Event Payload Display
+
+This application includes comprehensive UI components for displaying and managing threat event payloads from the Appdome SDK.
+
+#### 1. ThreatEventDisplay Component
+
+The main component for displaying detailed threat information:
+
+```typescript
+// Usage in your screen
+import { ThreatEventDisplay } from '@/components/threats/ThreatEventDisplay';
+import { ThreatEventProcessor } from '@/services/ThreatEventProcessor';
+
+export default function ThreatDetailsScreen({ route }) {
+  const { threatPayload } = route.params;
+  
+  // Process the raw payload
+  const processedEvent = ThreatEventProcessor.processPayload(
+    threatPayload,
+    'Your App Name'
+  );
+
+  return (
+    <ThreatEventDisplay 
+      event={processedEvent} 
+      appName="Your App Name"
+    />
+  );
+}
+```
+
+#### 2. Threat Event Processor
+
+Process and validate threat event payloads:
+
+```typescript
+// services/ThreatEventProcessor.ts
+import { ThreatEventProcessor } from '@/services/ThreatEventProcessor';
+
+// Validate payload structure
+if (ThreatEventProcessor.validatePayload(rawPayload)) {
+  // Process the payload
+  const processedEvent = ThreatEventProcessor.processPayload(rawPayload);
+  
+  // Get threat summary
+  const summary = ThreatEventProcessor.createSummary(processedEvent);
+  
+  // Determine severity
+  const severity = ThreatEventProcessor.determineSeverity(rawPayload.threatCode);
+  
+  // Format user message
+  const userMessage = ThreatEventProcessor.formatUserMessage(
+    rawPayload.message, 
+    'Your App Name'
+  );
+}
+```
+
+#### 3. TypeScript Type Definitions
+
+Comprehensive type safety for threat event data:
+
+```typescript
+// types/threatEvent.ts
+import { ThreatEventPayload, ProcessedThreatEvent } from '@/types/threatEvent';
+
+// Example payload structure
+const samplePayload: ThreatEventPayload = {
+  reasonCode: "5385",
+  threatCode: "A7QJ3W",
+  externalID: "DeveloperOptionsEnabled",
+  deviceID: "18c092fc8ff5fe7b",
+  deviceModel: "SM-S911B",
+  message: "{app_display_name} detected a threat...",
+  timestamp: "1752700739",
+  // ... additional fields
+};
+
+// Process into organized structure
+const processed: ProcessedThreatEvent = ThreatEventProcessor.processPayload(samplePayload);
+```
+
+#### 4. Component Features
+
+The threat event display includes:
+
+- **📋 Organized Information Sections**:
+  - Summary with severity badge
+  - Action messages with user guidance
+  - Threat details and classification
+  - Device, build, and security information
+
+- **🔄 Interactive Features**:
+  - Collapsible sections for better readability
+  - Copy-to-clipboard functionality for all data fields
+  - Action buttons for threat response
+  - Support reference extraction
+
+- **🎨 Visual Design**:
+  - Severity color coding (Low: Green, Medium: Yellow, High: Orange, Critical: Red)
+  - Responsive layout for different screen sizes
+  - Dark/light mode support
+  - Highlighting for important threat information
+
+#### 5. Navigation Integration
+
+Add the threat events screen to your navigation:
+
+```typescript
+// app/(tabs)/_layout.tsx
+<Tabs.Screen
+  name="threats"
+  options={{
+    title: 'Threats',
+    tabBarIcon: ({ color }) => <IconSymbol size={28} name="shield.fill" color={color} />,
+  }}
+/>
+```
+
 ### Advanced Usage Patterns
 
 #### 1. Custom Threat Response Configuration
