@@ -4,7 +4,6 @@ import { StyleSheet } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import ThreatEventDemo from '@/components/ThreatEventDemo';
 import RealTimeThreatHandler from '@/components/RealTimeThreatHandler';
 
 export default function HomeScreen() {
@@ -23,9 +22,8 @@ export default function HomeScreen() {
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Mobile Security Threat Detection</ThemedText>
         <ThemedText>
-          This app demonstrates the threat event handling system for mobile security threats.
-          The system can detect and respond to various security issues including rooted devices,
-          SSL certificate problems, app integrity violations, and more.
+          This app monitors for mobile security threats using Appdome's protection system.
+          When threats are detected, you'll receive real-time alerts with appropriate guidance.
         </ThemedText>
       </ThemedView>
 
@@ -38,16 +36,6 @@ export default function HomeScreen() {
             console.log('Real threat detected:', payload);
           }}
         />
-      </ThemedView>
-
-      {/* Demo system for testing */}
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Demo System (Testing Only)</ThemedText>
-        <ThemedText style={styles.demoNote}>
-          The demo below shows mock threat events for development and testing purposes.
-          When Appdome protections are active, real threats will be displayed above.
-        </ThemedText>
-        <ThreatEventDemo />
       </ThemedView>
     </ParallaxScrollView>
   );
@@ -62,12 +50,6 @@ const styles = StyleSheet.create({
   stepContainer: {
     gap: 8,
     marginBottom: 8,
-  },
-  demoNote: {
-    fontSize: 13,
-    fontStyle: 'italic',
-    opacity: 0.7,
-    marginBottom: 12,
   },
   reactLogo: {
     height: 178,
