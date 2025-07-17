@@ -122,14 +122,6 @@ export default function RealTimeThreatHandler({
         <ThemedText style={styles.statusSubtext}>
           Threat events will not be received. This app needs to be built with Appdome protections.
         </ThemedText>
-        {__DEV__ && (
-          <ThemedText 
-            style={styles.debugText}
-            onPress={triggerThreatCheck}
-          >
-            Tap to test threat check (Debug mode)
-          </ThemedText>
-        )}
       </ThemedView>
     );
   }

@@ -182,47 +182,44 @@ threatHandlerRegistry.register('MyCustomThreat', CustomThreatHandler);
 
 ## 🔗 Appdome SDK Integration
 
-### Quick Start for Real Threat Detection
+### Real Threat Detection Setup
 
-To enable real threat detection with the Appdome SDK:
+This app is designed to work exclusively with real Appdome threat events. To receive threat notifications:
 
-1. **Apply Appdome Protections** to your app build
-2. **Implement Native Module Bridge** (see [APPDOME_INTEGRATION.md](./docs/APPDOME_INTEGRATION.md))
-3. **Configure Threat Events** in Appdome platform
-4. **Deploy Protected App** to test real threat scenarios
+1. **Build the app**: Create a release build using Expo/EAS Build
+2. **Upload to Appdome**: Upload the APK/AAB to Appdome's platform
+3. **Configure protections**: Enable threat detection features
+4. **Download protected app**: Install the Appdome-protected version
+5. **Test threat scenarios**: Real threats will trigger alerts
 
 ### Integration Status
 
-```typescript
-// Check if real Appdome protection is active
-import { useAppdomeStatus } from '@/hooks/useThreatEvents';
+The app will display one of these states:
 
-const { isProtected, isChecking } = useAppdomeStatus();
-// isProtected = true when Appdome SDK is active
-```
+- **🛡️ Threat detection active**: Appdome protection is working
+- **⚠️ Appdome protection not active**: App is not protected by Appdome
+- **🔄 Initializing threat detection**: App is starting up
 
 ### Real-Time Event Handling
 
 ```typescript
-// Listen for real threat events
+// The app automatically handles real threat events
 import { useThreatEvents } from '@/hooks/useThreatEvents';
 
 const {
-  currentThreat,        // Current active threat
-  isProtected,          // Appdome protection status
-  threatHistory,        // All detected threats
+  currentThreat,        // Current active threat (real events only)
+  isProtected,          // True when Appdome SDK is active
+  threatHistory,        // All detected real threats
   dismissCurrentThreat, // Dismiss current alert
 } = useThreatEvents();
 ```
 
-### Native Module Requirements
+### Implementation Notes
 
-The app requires native module implementation for production use:
-- **Android**: `AppdomeSDKModule.java` 
-- **iOS**: `AppdomeSDKModule.swift`
-- **Bridge Registration**: Module registration in native code
-
-See **[docs/APPDOME_INTEGRATION.md](./docs/APPDOME_INTEGRATION.md)** for complete implementation guide.
+- **No mock data**: This version contains no demo or mock threat events
+- **Real events only**: Only actual Appdome threat detections are displayed
+- **Native integration**: Uses native bridge to connect with Appdome SDK
+- **Automatic detection**: The app automatically detects if Appdome is active
 
 ## 🚀 Getting Started
 

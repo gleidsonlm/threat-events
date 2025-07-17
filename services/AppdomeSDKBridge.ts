@@ -38,23 +38,10 @@ interface AppdomeNativeModule {
 }
 
 /**
- * Native module bridge - this would be registered by the native Appdome integration
- * For now, we'll provide a mock implementation that can be replaced with the real one
+ * Native module bridge - connects to the actual Appdome SDK
+ * This module is automatically injected by Appdome when the app is protected
  */
-const AppdomeNativeModule: AppdomeNativeModule = NativeModules.AppdomeSDK || {
-  initializeThreatDetection: async (): Promise<boolean> => {
-    console.warn('AppdomeSDK native module not found. Using mock implementation.');
-    return false;
-  },
-  getAppdomeConfig: async () => ({
-    isProtected: false,
-    version: 'mock',
-    enabledFeatures: [],
-  }),
-  triggerThreatCheck: async (): Promise<void> => {
-    console.warn('AppdomeSDK native module not found. Threat check skipped.');
-  },
-};
+const AppdomeNativeModule: AppdomeNativeModule = NativeModules.AppdomeSDK;
 
 /**
  * Event emitter for Appdome threat events
@@ -101,15 +88,22 @@ export class AppdomeSDKBridge {
     try {
       console.log('Initializing Appdome SDK bridge...');
       
+      // Check if Appdome native module is available
+      if (!AppdomeNativeModule) {
+        console.warn('Appdome SDK not found - app is not protected');
+        this.isInitialized = false;
+        return false;
+      }
+      
       const isProtected = await AppdomeNativeModule.initializeThreatDetection();
-      this.isInitialized = true;
+      this.isInitialized = isProtected;
       
       if (isProtected) {
         console.log('Appdome protection is active - threat detection enabled');
         const config = await AppdomeNativeModule.getAppdomeConfig();
         console.log('Appdome config:', config);
       } else {
-        console.warn('Appdome protection not detected - running in demo mode');
+        console.warn('Appdome protection not active');
       }
       
       return isProtected;
@@ -124,7 +118,7 @@ export class AppdomeSDKBridge {
    * Check if SDK is initialized and protected
    */
   public isProtected(): boolean {
-    return this.isInitialized;
+    return this.isInitialized && AppdomeNativeModule !== null;
   }
 
   /**
@@ -151,20 +145,21 @@ export class AppdomeSDKBridge {
    */
   private setupEventListening(): void {
     if (!appdomeEventEmitter) {
-      console.warn('Native event emitter not available - threat events will not be received');
+      console.warn('Native event emitter not available - web platform or native module missing');
       return;
     }
 
     // Listen for threat events from the native Appdome SDK
+    // Appdome typically uses 'ThreatEvent' as the event name
     this.eventSubscription = appdomeEventEmitter.addListener(
-      'AppdomeThreaEvent', // This event name should match the native implementation
+      'ThreatEvent',
       (threatEventData: any) => {
-        console.log('Received threat event from native SDK:', threatEventData);
+        console.log('Received Appdome threat event:', threatEventData);
         this.handleNativeThreatEvent(threatEventData);
       }
     );
 
-    console.log('Native threat event listening setup complete');
+    console.log('Appdome threat event listening setup complete');
   }
 
   /**
@@ -231,9 +226,14 @@ export class AppdomeSDKBridge {
   }
 
   /**
-   * Trigger a manual threat check (useful for testing)
+   * Trigger a manual threat check (only if Appdome is available)
    */
   public async triggerThreatCheck(): Promise<void> {
+    if (!AppdomeNativeModule) {
+      console.warn('Appdome SDK not available for threat check');
+      return;
+    }
+    
     try {
       await AppdomeNativeModule.triggerThreatCheck();
     } catch (error) {
