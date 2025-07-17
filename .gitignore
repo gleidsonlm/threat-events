@@ -37,4 +37,10 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
+
+# pkg mngt lock
 bun.lock
+package-lock.json
+
+# build
+*.aab
