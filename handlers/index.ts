@@ -3,6 +3,7 @@ export * from './BaseThreatHandler';
 export * from './DefaultThreatHandler';
 export * from './RootedDeviceHandler';
 export * from './UnknownSourcesEnabledHandler';
+export * from './DeveloperOptionsEnabledHandler';
 export * from './SslCertificateValidationFailedHandler';
 export * from './SslNonSslConnectionHandler';
 export * from './SslIncompatibleVersionHandler';

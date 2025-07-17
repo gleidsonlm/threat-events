@@ -11,6 +11,7 @@
 export enum ThreatEventType {
   ROOTED_DEVICE = "RootedDevice",
   UNKNOWN_SOURCES_ENABLED = "UnknownSourcesEnabled", 
+  DEVELOPER_OPTIONS_ENABLED = "DeveloperOptionsEnabled",
   SSL_CERTIFICATE_VALIDATION_FAILED = "SslCertificateValidationFailed",
   SSL_NON_SSL_CONNECTION = "SslNonSslConnection",
   SSL_INCOMPATIBLE_VERSION = "SslIncompatibleVersion", 
@@ -83,6 +84,17 @@ export interface RootedDevicePayload extends ThreatEventPayload {
 export interface UnknownSourcesEnabledPayload extends ThreatEventPayload {
   readonly externalID: ThreatEventType.UNKNOWN_SOURCES_ENABLED;
   readonly settingValue?: string;
+}
+
+/**
+ * Developer Options Enabled - Detects when Android Developer Options are enabled
+ * Security Impact: MEDIUM - Enables debugging and development features that can be exploited
+ */
+export interface DeveloperOptionsEnabledPayload extends ThreatEventPayload {
+  readonly externalID: ThreatEventType.DEVELOPER_OPTIONS_ENABLED;
+  readonly usbDebuggingEnabled?: string;
+  readonly adbEnabled?: string;
+  readonly stayAwakeEnabled?: string;
 }
 
 /**
@@ -183,6 +195,7 @@ export interface GoogleEmulatorDetectedPayload extends ThreatEventPayload {
 export type SpecificThreatEventPayload = 
   | RootedDevicePayload
   | UnknownSourcesEnabledPayload
+  | DeveloperOptionsEnabledPayload
   | SslCertificateValidationFailedPayload
   | SslNonSslConnectionPayload
   | SslIncompatibleVersionPayload

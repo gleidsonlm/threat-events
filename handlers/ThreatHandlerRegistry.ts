@@ -15,6 +15,7 @@ import {
 import { DefaultThreatHandler } from './DefaultThreatHandler';
 import { RootedDeviceHandler } from './RootedDeviceHandler';
 import { UnknownSourcesEnabledHandler } from './UnknownSourcesEnabledHandler';
+import { DeveloperOptionsEnabledHandler } from './DeveloperOptionsEnabledHandler';
 import { SslCertificateValidationFailedHandler } from './SslCertificateValidationFailedHandler';
 import { SslNonSslConnectionHandler } from './SslNonSslConnectionHandler';
 import { SslIncompatibleVersionHandler } from './SslIncompatibleVersionHandler';
@@ -41,6 +42,7 @@ export class ThreatHandlerRegistry implements IThreatHandlerRegistry {
   private registerDefaultHandlers(): void {
     this.register(ThreatEventType.ROOTED_DEVICE, RootedDeviceHandler);
     this.register(ThreatEventType.UNKNOWN_SOURCES_ENABLED, UnknownSourcesEnabledHandler);
+    this.register(ThreatEventType.DEVELOPER_OPTIONS_ENABLED, DeveloperOptionsEnabledHandler);
     this.register(ThreatEventType.SSL_CERTIFICATE_VALIDATION_FAILED, SslCertificateValidationFailedHandler);
     this.register(ThreatEventType.SSL_NON_SSL_CONNECTION, SslNonSslConnectionHandler);
     this.register(ThreatEventType.SSL_INCOMPATIBLE_VERSION, SslIncompatibleVersionHandler);

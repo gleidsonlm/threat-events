@@ -52,7 +52,32 @@ The Threat Events system is designed to detect, categorize, and respond to vario
 
 ---
 
-### 3. SslCertificateValidationFailed
+### 3. DeveloperOptionsEnabled
+**Security Impact:** MEDIUM  
+**Description:** Detects when Android Developer Options are enabled on the device.
+
+**What it means:**
+- Developer Options expose debugging and development features
+- USB debugging capabilities are accessible
+- Increased attack surface for malicious applications
+- Potential for unauthorized access via ADB (Android Debug Bridge)
+
+**Detection indicators:**
+- Developer Options menu is accessible in Settings
+- USB Debugging may be enabled
+- Developer features are exposed
+
+**Recommended Actions:**
+- Go to Settings > About Phone and stop tapping "Build Number"
+- If Developer Options are visible, go to Settings > Developer Options
+- Toggle "Developer Options" to OFF
+- Disable "USB Debugging" if enabled
+- Restart device to ensure changes take effect
+- Only enable when actively developing applications
+
+---
+
+### 4. SslCertificateValidationFailed
 **Security Impact:** HIGH  
 **Description:** Detects SSL certificate validation failures, indicating potential man-in-the-middle attacks.
 
@@ -77,7 +102,7 @@ The Threat Events system is designed to detect, categorize, and respond to vario
 
 ---
 
-### 4. SslNonSslConnection
+### 5. SslNonSslConnection
 **Security Impact:** HIGH  
 **Description:** Detects unencrypted network connections where SSL/TLS should be used.
 
@@ -101,7 +126,7 @@ The Threat Events system is designed to detect, categorize, and respond to vario
 
 ---
 
-### 5. SslIncompatibleVersion
+### 6. SslIncompatibleVersion
 **Security Impact:** MEDIUM  
 **Description:** Detects outdated or incompatible SSL/TLS versions vulnerable to known exploits.
 
@@ -126,7 +151,7 @@ The Threat Events system is designed to detect, categorize, and respond to vario
 
 ---
 
-### 6. NetworkProxyConfigured
+### 7. NetworkProxyConfigured
 **Security Impact:** MEDIUM  
 **Description:** Detects network proxy configuration that could intercept traffic.
 
@@ -151,7 +176,7 @@ The Threat Events system is designed to detect, categorize, and respond to vario
 
 ---
 
-### 7. DebuggerThreatDetected
+### 8. DebuggerThreatDetected
 **Security Impact:** HIGH  
 **Description:** Detects attached debuggers that could be used for reverse engineering.
 
@@ -176,7 +201,7 @@ The Threat Events system is designed to detect, categorize, and respond to vario
 
 ---
 
-### 8. AppIsDebuggable
+### 9. AppIsDebuggable
 **Security Impact:** MEDIUM  
 **Description:** Detects if the application is running in a debuggable state.
 
@@ -201,7 +226,7 @@ The Threat Events system is designed to detect, categorize, and respond to vario
 
 ---
 
-### 9. AppIntegrityError
+### 10. AppIntegrityError
 **Security Impact:** CRITICAL  
 **Description:** Detects application binary modification or tampering.
 
@@ -228,7 +253,7 @@ The Threat Events system is designed to detect, categorize, and respond to vario
 
 ---
 
-### 10. EmulatorFound
+### 11. EmulatorFound
 **Security Impact:** LOW  
 **Description:** Detects if the application is running in an emulated environment.
 
@@ -253,7 +278,7 @@ The Threat Events system is designed to detect, categorize, and respond to vario
 
 ---
 
-### 11. GoogleEmulatorDetected
+### 12. GoogleEmulatorDetected
 **Security Impact:** LOW  
 **Description:** Specifically detects Google's Android emulator environment.
 

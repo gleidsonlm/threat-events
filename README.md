@@ -13,7 +13,7 @@ A React Native mobile application that implements Appdome's **Threat-Events** fu
 ### Comprehensive Threat Event System
 This application now includes a complete threat event handling system with:
 
-- **11 Specific Threat Types** - Ready to handle all major mobile security threats
+- **12 Specific Threat Types** - Ready to handle all major mobile security threats
 - **Severity-Based Classification** - Critical, High, Medium, and Low threat levels
 - **Specialized Display Components** - Custom UI for each threat type
 - **Handler Registry Pattern** - Extensible architecture for custom threat handlers
@@ -25,6 +25,7 @@ This application now includes a complete threat event handling system with:
 |-------------|----------|-------------|
 | `RootedDevice` | HIGH | Detects rooted/jailbroken devices |
 | `UnknownSourcesEnabled` | MEDIUM | Install from unknown sources enabled |
+| `DeveloperOptionsEnabled` | MEDIUM | Android Developer Options enabled |
 | `SslCertificateValidationFailed` | HIGH | SSL certificate validation failures |
 | `SslNonSslConnection` | HIGH | Unencrypted network connections |
 | `SslIncompatibleVersion` | MEDIUM | Outdated SSL/TLS versions |
