@@ -13,14 +13,23 @@ import { SslCertificateValidationFailedPayload, ThreatHandler } from '@/types';
 interface SslCertificateValidationFailedAlertProps {
   payload: SslCertificateValidationFailedPayload;
   handler: ThreatHandler;
+  onDismiss?: () => void;
+  showDismissButton?: boolean;
 }
 
 export const SslCertificateValidationFailedAlert: React.FC<SslCertificateValidationFailedAlertProps> = ({ 
   payload, 
-  handler 
+  handler,
+  onDismiss,
+  showDismissButton,
 }) => {
   return (
-    <BaseThreatAlert payload={payload} handler={handler}>
+    <BaseThreatAlert 
+      payload={payload} 
+      handler={handler}
+      onDismiss={onDismiss}
+      showDismissButton={showDismissButton}
+    >
       <View style={styles.specializedContent}>
         <ThemedText type="defaultSemiBold" style={styles.warningTitle}>
           🔒 Connection Security Compromised

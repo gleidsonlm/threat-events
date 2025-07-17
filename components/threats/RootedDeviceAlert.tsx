@@ -13,14 +13,23 @@ import { RootedDevicePayload, ThreatHandler } from '@/types';
 interface RootedDeviceAlertProps {
   payload: RootedDevicePayload;
   handler: ThreatHandler;
+  onDismiss?: () => void;
+  showDismissButton?: boolean;
 }
 
 export const RootedDeviceAlert: React.FC<RootedDeviceAlertProps> = ({ 
   payload, 
-  handler 
+  handler,
+  onDismiss,
+  showDismissButton,
 }) => {
   return (
-    <BaseThreatAlert payload={payload} handler={handler}>
+    <BaseThreatAlert 
+      payload={payload} 
+      handler={handler}
+      onDismiss={onDismiss}
+      showDismissButton={showDismissButton}
+    >
       <View style={styles.specializedContent}>
         <ThemedText type="defaultSemiBold" style={styles.warningTitle}>
           ⚠️ Security Risk: Device Compromised

@@ -5,6 +5,7 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import ThreatEventDemo from '@/components/ThreatEventDemo';
+import RealTimeThreatHandler from '@/components/RealTimeThreatHandler';
 
 export default function HomeScreen() {
   return (
@@ -27,7 +28,25 @@ export default function HomeScreen() {
           SSL certificate problems, app integrity violations, and more.
         </ThemedText>
       </ThemedView>
+
+      {/* Real-time threat detection */}
       <ThemedView style={styles.stepContainer}>
+        <RealTimeThreatHandler
+          showStatus={true}
+          autoDismissLowThreats={true}
+          onThreatDetected={(payload) => {
+            console.log('Real threat detected:', payload);
+          }}
+        />
+      </ThemedView>
+
+      {/* Demo system for testing */}
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle">Demo System (Testing Only)</ThemedText>
+        <ThemedText style={styles.demoNote}>
+          The demo below shows mock threat events for development and testing purposes.
+          When Appdome protections are active, real threats will be displayed above.
+        </ThemedText>
         <ThreatEventDemo />
       </ThemedView>
     </ParallaxScrollView>
@@ -43,6 +62,12 @@ const styles = StyleSheet.create({
   stepContainer: {
     gap: 8,
     marginBottom: 8,
+  },
+  demoNote: {
+    fontSize: 13,
+    fontStyle: 'italic',
+    opacity: 0.7,
+    marginBottom: 12,
   },
   reactLogo: {
     height: 178,
