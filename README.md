@@ -8,6 +8,248 @@
 
 A React Native mobile application that implements Appdome's **Threat-Events** functionality using the **"In-App Detection"** method, providing real-time mobile security threat detection and response capabilities.
 
+## 🚀 New Features
+
+### Comprehensive Threat Event System
+This application now includes a complete threat event handling system with:
+
+- **11 Specific Threat Types** - Ready to handle all major mobile security threats
+- **Severity-Based Classification** - Critical, High, Medium, and Low threat levels
+- **Specialized Display Components** - Custom UI for each threat type
+- **Handler Registry Pattern** - Extensible architecture for custom threat handlers
+- **Type-Safe Implementation** - Full TypeScript support with discriminated unions
+
+### Supported Threat Types
+
+| Threat Type | Severity | Description |
+|-------------|----------|-------------|
+| `RootedDevice` | HIGH | Detects rooted/jailbroken devices |
+| `UnknownSourcesEnabled` | MEDIUM | Install from unknown sources enabled |
+| `SslCertificateValidationFailed` | HIGH | SSL certificate validation failures |
+| `SslNonSslConnection` | HIGH | Unencrypted network connections |
+| `SslIncompatibleVersion` | MEDIUM | Outdated SSL/TLS versions |
+| `NetworkProxyConfigured` | MEDIUM | Network proxy detection |
+| `DebuggerThreatDetected` | HIGH | Debugger attachment detection |
+| `AppIsDebuggable` | MEDIUM | Debug-enabled application state |
+| `AppIntegrityError` | **CRITICAL** | Application tampering detected |
+| `EmulatorFound` | LOW | Emulator environment detection |
+| `GoogleEmulatorDetected` | LOW | Google emulator specific detection |
+
+## 🏗️ Architecture
+
+### Threat Event Handling System
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   Threat Event Flow                         │
+├─────────────────────────────────────────────────────────────┤
+│  1. Threat Detection (Appdome SDK)                         │
+│                    ↓                                        │
+│  2. Event Processing (Handler Registry)                    │
+│                    ↓                                        │
+│  3. Specialized Handlers (Strategy Pattern)                │
+│                    ↓                                        │
+│  4. Display Components (Factory Pattern)                   │
+│                    ↓                                        │
+│  5. User Response & Actions                                 │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Key Components
+
+#### 🎯 **Threat Handler Registry**
+Central registry managing specialized handlers for each threat type using Factory pattern:
+
+```typescript
+const handler = threatHandlerRegistry.createHandler(payload);
+const severity = handler.getSeverity();
+const actions = handler.getRecommendedActions();
+```
+
+#### 🎨 **Specialized Display Components**
+Custom UI components for different threat types:
+
+- `RootedDeviceAlert` - Shows rooting method and security implications
+- `SslCertificateValidationFailedAlert` - Displays certificate chain and validation errors  
+- `AppIntegrityErrorAlert` - Critical security warnings for tampered apps
+- `GenericThreatAlert` - Fallback for standard threats
+
+#### 🛡️ **Type-Safe Event System**
+Discriminated unions and interfaces ensure compile-time safety:
+
+```typescript
+export interface RootedDevicePayload extends ThreatEventPayload {
+  readonly externalID: ThreatEventType.ROOTED_DEVICE;
+  readonly rootingMethod?: string;
+  readonly rootIndicators?: string[];
+}
+```
+
+## 📱 Demo & Usage
+
+The app includes an interactive demo showcasing all threat types. You can:
+
+1. **Select any threat type** from the list
+2. **View specialized alerts** with threat-specific information
+3. **See recommended actions** for each security issue
+4. **Experience the actual UI** users would see during real threats
+
+### Running the Demo
+
+```bash
+# Install dependencies
+npm install
+
+# Start the development server
+npm start
+
+# Run on iOS or Android
+npm run ios
+npm run android
+```
+
+## 🔧 Integration Guide
+
+### Basic Integration
+
+```typescript
+import { threatHandlerRegistry } from '@/handlers';
+import { ThreatAlertFactory } from '@/components/threats';
+
+// Handle incoming threat events
+const handleThreatEvent = (payload: ThreatEventPayload) => {
+  const handler = threatHandlerRegistry.createHandler(payload);
+  
+  // Get threat information
+  const severity = handler.getSeverity();
+  const title = handler.getTitle();
+  const actions = handler.getRecommendedActions();
+  
+  // Display appropriate alert
+  return <ThreatAlertFactory payload={payload} handler={handler} />;
+};
+```
+
+### Custom Threat Handlers
+
+```typescript
+import { BaseThreatHandler } from '@/handlers';
+
+class CustomThreatHandler extends BaseThreatHandler {
+  canHandle(event: ThreatEventPayload): boolean {
+    return event.externalID === 'MyCustomThreat';
+  }
+  
+  getSeverity(): ThreatSeverity {
+    return ThreatSeverity.HIGH;
+  }
+  
+  // Implement other required methods...
+}
+
+// Register custom handler
+threatHandlerRegistry.register('MyCustomThreat', CustomThreatHandler);
+```
+
+## 📚 Documentation
+
+- **[THREATS.md](./THREATS.md)** - Detailed documentation of all supported threat types
+- **[Architecture Guide](#architecture)** - System design and patterns used
+- **[API Reference](#api-reference)** - Complete TypeScript interface documentation
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or later)
+- npm or yarn
+- Expo CLI
+- iOS Simulator or Android Emulator
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/gleidsonlm/threat-events.git
+cd threat-events
+
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+```
+
+## 🧪 Testing
+
+The threat system includes comprehensive test coverage:
+
+```bash
+# Run all tests
+npm test
+
+# Run with coverage
+npm run test:coverage
+
+# Lint code
+npm run lint
+```
+
+## 🛡️ Security Features
+
+### Threat Severity Classification
+- **CRITICAL** - Immediate security breach (App Integrity)
+- **HIGH** - Significant security risk (Root, SSL issues)
+- **MEDIUM** - Moderate security concern (Debug states, Proxies)
+- **LOW** - Minor security note (Emulators)
+
+### Specialized Threat Responses
+Each threat type includes:
+- ✅ **Threat-specific guidance** for users
+- ✅ **Recommended remediation actions**
+- ✅ **Security impact explanation**
+- ✅ **Visual severity indicators**
+
+### Type Safety
+- 🔒 **Discriminated unions** for type-safe threat handling
+- 🔒 **Compile-time validation** of threat event structures
+- 🔒 **Interface-based design** for extensibility
+
+## 🎨 Design System
+
+The threat alerts follow a consistent design language:
+
+- **Color coding** by severity level
+- **Progressive disclosure** of technical details
+- **Accessible design** with proper ARIA labels
+- **Responsive layout** for different screen sizes
+
+## 🔄 Coming Soon
+
+- **Real Appdome SDK Integration** - Connect to live threat detection
+- **Threat Analytics Dashboard** - Historical threat data and trends
+- **Custom Response Workflows** - Configurable threat response actions
+- **Push Notifications** - Real-time threat alerts
+- **Threat Export** - Data export for security analysis
+
+## 📖 Learn More
+
+- [Appdome Threat-Events Documentation](https://www.appdome.com/how-to/advanced-threat-intelligence-android-ios/threat-events-ux-ui-control/threat-events-in-app-threat-intelligence-in-react-native-apps/)
+- [React Native Security Best Practices](https://reactnative.dev/docs/security)
+- [OWASP Mobile Security Testing Guide](https://owasp.org/www-project-mobile-security-testing-guide/)
+
+## 🤝 Contributing
+
+We welcome contributions! See our [Contributing Guide](./CONTRIBUTING.md) for details.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+*Built with ❤️ for mobile security professionals and developers implementing comprehensive threat detection systems.*
+
 ## Table of Contents
 
 - [Introduction](#introduction)
