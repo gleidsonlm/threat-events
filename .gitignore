@@ -43,4 +43,4 @@ bun.lock
 package-lock.json
 
 # build
-*.aab
+# *.aab
