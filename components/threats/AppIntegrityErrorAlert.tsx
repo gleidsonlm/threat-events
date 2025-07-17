@@ -13,14 +13,23 @@ import { AppIntegrityErrorPayload, ThreatHandler } from '@/types';
 interface AppIntegrityErrorAlertProps {
   payload: AppIntegrityErrorPayload;
   handler: ThreatHandler;
+  onDismiss?: () => void;
+  showDismissButton?: boolean;
 }
 
 export const AppIntegrityErrorAlert: React.FC<AppIntegrityErrorAlertProps> = ({ 
   payload, 
-  handler 
+  handler,
+  onDismiss,
+  showDismissButton,
 }) => {
   return (
-    <BaseThreatAlert payload={payload} handler={handler}>
+    <BaseThreatAlert 
+      payload={payload} 
+      handler={handler}
+      onDismiss={onDismiss}
+      showDismissButton={showDismissButton}
+    >
       <View style={styles.criticalWarning}>
         <ThemedText type="subtitle" style={styles.criticalTitle}>
           🚨 CRITICAL SECURITY ALERT 🚨

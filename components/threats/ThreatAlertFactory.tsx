@@ -14,6 +14,8 @@ import { GenericThreatAlert } from './GenericThreatAlert';
 interface ThreatAlertFactoryProps {
   payload: ThreatEventPayload;
   handler: ThreatHandler;
+  onDismiss?: () => void;
+  showDismissButton?: boolean;
 }
 
 /**
@@ -22,17 +24,40 @@ interface ThreatAlertFactoryProps {
  */
 export const ThreatAlertFactory: React.FC<ThreatAlertFactoryProps> = ({ 
   payload, 
-  handler 
+  handler,
+  onDismiss,
+  showDismissButton = false,
 }) => {
   switch (payload.externalID as ThreatEventType) {
     case ThreatEventType.ROOTED_DEVICE:
-      return <RootedDeviceAlert payload={payload as any} handler={handler} />;
+      return (
+        <RootedDeviceAlert 
+          payload={payload as any} 
+          handler={handler} 
+          onDismiss={onDismiss}
+          showDismissButton={showDismissButton}
+        />
+      );
       
     case ThreatEventType.SSL_CERTIFICATE_VALIDATION_FAILED:
-      return <SslCertificateValidationFailedAlert payload={payload as any} handler={handler} />;
+      return (
+        <SslCertificateValidationFailedAlert 
+          payload={payload as any} 
+          handler={handler}
+          onDismiss={onDismiss}
+          showDismissButton={showDismissButton}
+        />
+      );
       
     case ThreatEventType.APP_INTEGRITY_ERROR:
-      return <AppIntegrityErrorAlert payload={payload as any} handler={handler} />;
+      return (
+        <AppIntegrityErrorAlert 
+          payload={payload as any} 
+          handler={handler}
+          onDismiss={onDismiss}
+          showDismissButton={showDismissButton}
+        />
+      );
       
     // For all other threat types, use the generic alert with base styling
     case ThreatEventType.UNKNOWN_SOURCES_ENABLED:
@@ -44,6 +69,13 @@ export const ThreatAlertFactory: React.FC<ThreatAlertFactoryProps> = ({
     case ThreatEventType.EMULATOR_FOUND:
     case ThreatEventType.GOOGLE_EMULATOR_DETECTED:
     default:
-      return <GenericThreatAlert payload={payload} handler={handler} />;
+      return (
+        <GenericThreatAlert 
+          payload={payload} 
+          handler={handler}
+          onDismiss={onDismiss}
+          showDismissButton={showDismissButton}
+        />
+      );
   }
 };

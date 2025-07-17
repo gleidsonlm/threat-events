@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Pressable } from 'react-native';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThreatHandler, ThreatEventPayload, ThreatSeverity } from '@/types';
@@ -14,6 +14,8 @@ interface BaseThreatAlertProps {
   payload: ThreatEventPayload;
   handler: ThreatHandler;
   children?: React.ReactNode;
+  onDismiss?: () => void;
+  showDismissButton?: boolean;
 }
 
 /**
@@ -22,17 +24,27 @@ interface BaseThreatAlertProps {
 export const BaseThreatAlert: React.FC<BaseThreatAlertProps> = ({ 
   payload, 
   handler, 
-  children 
+  children,
+  onDismiss,
+  showDismissButton = false,
 }) => {
   const severity = handler.getSeverity();
   const severityColors = getSeverityColors(severity);
 
   return (
     <ThemedView style={[styles.container, { borderLeftColor: severityColors.border }]}>
-      <View style={[styles.severityBadge, { backgroundColor: severityColors.background }]}>
-        <Text style={[styles.severityText, { color: severityColors.text }]}>
-          {severity.toUpperCase()}
-        </Text>
+      <View style={styles.header}>
+        <View style={[styles.severityBadge, { backgroundColor: severityColors.background }]}>
+          <Text style={[styles.severityText, { color: severityColors.text }]}>
+            {severity.toUpperCase()}
+          </Text>
+        </View>
+        
+        {showDismissButton && onDismiss && (
+          <Pressable style={styles.dismissButton} onPress={onDismiss}>
+            <Text style={styles.dismissButtonText}>✕</Text>
+          </Pressable>
+        )}
       </View>
       
       <ThemedText type="subtitle" style={styles.title}>
@@ -125,15 +137,33 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 8,
+  },
   severityBadge: {
-    alignSelf: 'flex-start',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 4,
-    marginBottom: 8,
   },
   severityText: {
     fontSize: 12,
+    fontWeight: 'bold',
+  },
+  dismissButton: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#f0f0f0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 8,
+  },
+  dismissButtonText: {
+    fontSize: 14,
+    color: '#666',
     fontWeight: 'bold',
   },
   title: {

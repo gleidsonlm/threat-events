@@ -94,6 +94,28 @@ The app includes an interactive demo showcasing all threat types. You can:
 3. **See recommended actions** for each security issue
 4. **Experience the actual UI** users would see during real threats
 
+### Real-Time Threat Detection
+
+**NEW**: The app now includes actual Appdome SDK integration for real threat detection:
+
+#### Production Mode (with Appdome Protection)
+When your app is built with Appdome protections:
+- Real threats are automatically detected and displayed
+- Threat events are captured from the native Appdome SDK
+- Severity-based alerting with auto-dismiss for low-level threats
+- Critical threats show system alerts that require user acknowledgment
+
+#### Development Mode (without Protection)
+- Shows "Appdome protection not active" status
+- Demo system remains available for UI testing
+- Mock threat events can be triggered for development
+
+#### Key Features:
+- **Real-Time Processing**: Immediate threat event handling
+- **Native Bridge**: Seamless communication between Appdome SDK and React Native
+- **Type-Safe Integration**: Full TypeScript support for all threat events
+- **Automatic Cleanup**: Proper memory management and listener cleanup
+
 ### Running the Demo
 
 ```bash
@@ -156,6 +178,50 @@ threatHandlerRegistry.register('MyCustomThreat', CustomThreatHandler);
 - **[THREATS.md](./THREATS.md)** - Detailed documentation of all supported threat types
 - **[Architecture Guide](#architecture)** - System design and patterns used
 - **[API Reference](#api-reference)** - Complete TypeScript interface documentation
+
+## 🔗 Appdome SDK Integration
+
+### Quick Start for Real Threat Detection
+
+To enable real threat detection with the Appdome SDK:
+
+1. **Apply Appdome Protections** to your app build
+2. **Implement Native Module Bridge** (see [APPDOME_INTEGRATION.md](./docs/APPDOME_INTEGRATION.md))
+3. **Configure Threat Events** in Appdome platform
+4. **Deploy Protected App** to test real threat scenarios
+
+### Integration Status
+
+```typescript
+// Check if real Appdome protection is active
+import { useAppdomeStatus } from '@/hooks/useThreatEvents';
+
+const { isProtected, isChecking } = useAppdomeStatus();
+// isProtected = true when Appdome SDK is active
+```
+
+### Real-Time Event Handling
+
+```typescript
+// Listen for real threat events
+import { useThreatEvents } from '@/hooks/useThreatEvents';
+
+const {
+  currentThreat,        // Current active threat
+  isProtected,          // Appdome protection status
+  threatHistory,        // All detected threats
+  dismissCurrentThreat, // Dismiss current alert
+} = useThreatEvents();
+```
+
+### Native Module Requirements
+
+The app requires native module implementation for production use:
+- **Android**: `AppdomeSDKModule.java` 
+- **iOS**: `AppdomeSDKModule.swift`
+- **Bridge Registration**: Module registration in native code
+
+See **[docs/APPDOME_INTEGRATION.md](./docs/APPDOME_INTEGRATION.md)** for complete implementation guide.
 
 ## 🚀 Getting Started
 

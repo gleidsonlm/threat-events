@@ -11,11 +11,22 @@ import { ThreatEventPayload, ThreatHandler } from '@/types';
 interface GenericThreatAlertProps {
   payload: ThreatEventPayload;
   handler: ThreatHandler;
+  onDismiss?: () => void;
+  showDismissButton?: boolean;
 }
 
 export const GenericThreatAlert: React.FC<GenericThreatAlertProps> = ({ 
   payload, 
-  handler 
+  handler,
+  onDismiss,
+  showDismissButton,
 }) => {
-  return <BaseThreatAlert payload={payload} handler={handler} />;
+  return (
+    <BaseThreatAlert 
+      payload={payload} 
+      handler={handler}
+      onDismiss={onDismiss}
+      showDismissButton={showDismissButton}
+    />
+  );
 };
